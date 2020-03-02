@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 
 import { Creators as AuthActions } from '../../store/ducks/auth';
 import { bindActionCreators } from 'redux';
+import TagIcon from 'react-feather/dist/icons/tag';
+import TransactionIcon from 'react-feather/dist/icons/dollar-sign';
 
 class SideMenu extends Component {
 
@@ -15,8 +17,11 @@ class SideMenu extends Component {
     return (
       <Container>
         <ItemList>
-          <Item>
-            <img alt="" src={logo} />
+          <Item title="Transações">
+          <TransactionIcon color={'#FFF'}/>
+          </Item>
+          <Item title="Tags">
+            <TagIcon color={'#FFF'}/>
           </Item>
         </ItemList>
         <ItemList>

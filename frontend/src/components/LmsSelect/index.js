@@ -143,7 +143,7 @@ class LmsSelect extends Component {
 
     return (
       <PerfectScrollbar style={{ width: '100%' }}>
-        <ConfigContainer style={{ minHeight: '70%' }}>
+        <ConfigContainer size='big' style={{ minHeight: '70%' }}>
           <h1>Transações</h1>
 
           <CardContainer>
