@@ -6,6 +6,7 @@ import {
 } from './styles';
 
 import { Creators as DialogActions } from '../../store/ducks/dialog';
+import { Creators as TagActions } from '../../store/ducks/tag';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { connect } from 'react-redux';
 
@@ -21,12 +22,12 @@ class Tags extends Component {
 
   state = {
     tag: null,
-    monthlyValue: 0,
-    isCalculateSuggest: false
+    monthly_value: null,
+    is_calculate_suggest: false
   }
 
   submit() {
-    const { id, tag, monthlyValue, isCalculateSuggest } = this.state;
+    const { id, tag, monthly_value, is_calculate_suggest } = this.state;
     const { setDialog, postTag } = this.props;
 
     if (!tag) {
@@ -34,12 +35,12 @@ class Tags extends Component {
       return;
     }
 
-    if (!monthlyValue) {
+    if (!monthly_value) {
       this.renderWarningMsg('Informe o Valor Mensal');
       return;
     }
 
-    postTag({ id, tag, monthlyValue, isCalculateSuggest });
+    postTag({ id, tag, monthly_value: +monthly_value, is_calculate_suggest: !!is_calculate_suggest });
     setDialog('tag');
   }
 
@@ -52,17 +53,13 @@ class Tags extends Component {
   }
 
   handleChangeInput = e => {
-    this.setState({ [e.target.tag]: e.target.value });
-  }
-
-  onChange(e, value) {
-    this.setState({})
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleChange = (item, name) => this.setState({ [name]: item });
 
   renderDialog() {
-    const { tag, monthlyValue, isCalculateSuggest } = this.state;
+    const { tag, monthly_value, is_calculate_suggest } = this.state;
     const { setDialog } = this.props;
 
     return (
@@ -74,14 +71,14 @@ class Tags extends Component {
           <DialogInput value={tag} autoComplete="off" onChange={this.handleChangeInput} name="tag"></DialogInput>
 
           <DialogSpan>Saldo Mensal (R$)</DialogSpan>
-          <DialogInput value={monthlyValue} onChange={this.handleChangeInput} name="monthlyValue" type="number" />
+          <DialogInput value={monthly_value} onChange={this.handleChangeInput} name="monthly_value" type="number" />
 
           <div style={{ marginTop: '20px' }}>
           <Checkbox 
-            value={isCalculateSuggest} 
+            value={is_calculate_suggest} 
             label="Calcular Sugestão de Gastos?" 
             onChange={this.handleChangeInput} 
-            name="isCalculateSuggest" />
+            name="is_calculate_suggest" />
           </div>
 
           <DialogFormButtonContainer>
@@ -126,6 +123,6 @@ const mapStateToProps = ({ dialog }) => ({ dialog });
 
 export default connect(
   mapStateToProps, {
-  ...DialogActions,...toastrActions
+  ...DialogActions,...toastrActions, ...TagActions
 }
 )(Tags);

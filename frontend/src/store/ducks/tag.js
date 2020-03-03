@@ -6,7 +6,7 @@ export const { Types, Creators } = createActions({
   tagRequest: [],
   tagSuccess: ['data'],
   tagError: ['err'],
-  getLms: [],
+  getTags: [],
   postTag: ['data']
 });
 

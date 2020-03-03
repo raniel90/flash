@@ -1,11 +1,12 @@
 import datetime
 import traceback
 from Model import db
-from Model import Tag, TagSchema
 from flask import request
+from Model import Tag, TagSchema
 from flask_restful import Resource
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
-class TagResource(Resource):
+class Tags(Resource):
 
     @jwt_required
     def post(self):
@@ -19,7 +20,7 @@ class TagResource(Resource):
                 tag=data['tag'],
                 monthly_value=data['monthly_value'],
                 is_calculate_suggest=data['is_calculate_suggest'],
-                user_id=data['user_id']
+                user_id=current_user['id'],
                 created_at=now,
                 updated_at=now
             )
@@ -35,8 +36,8 @@ class TagResource(Resource):
 
     def get(self):
         try:
-            res = Tag.query.order_by(Tag.id).with_entities(
-                Tag.id, Tag.name, Tag.url, Tag.token, Tag.version).all()
+            res = Tag.query.order_by(Tag.tag).with_entities(
+                Tag.id, Tag.tag, Tag.monthly_value, Tag.is_calculate_suggest).all()
 
             schema = TagSchema(many=True)
             data = schema.dump(res)

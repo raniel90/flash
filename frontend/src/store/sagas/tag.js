@@ -4,10 +4,10 @@ import { call, put } from 'redux-saga/effects';
 import { actions as toastrActions } from 'react-redux-toastr';
 
 
-export function* getTag() {
+export function* getTags() {
   try {
     yield put(Creators.tagRequest());
-    const response = yield call(api.get, 'tag');
+    const response = yield call(api.get, 'tags');
 
     yield put(Creators.tagSuccess(response.data));
   } catch (err) {
@@ -23,7 +23,7 @@ export function* getTag() {
 export function* postTag({ data }) {
   try {
     yield put(Creators.tagRequest());
-    const response = yield call(api.post, 'tag', data);
+    const response = yield call(api.post, 'tags', data);
 
     yield put(Creators.tagSuccess(response.data));
   } catch (err) {
