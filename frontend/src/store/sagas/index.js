@@ -1,15 +1,15 @@
 import { all, takeLatest } from 'redux-saga/effects';
 import { Types as AuthTypes } from '../ducks/auth';
-import { Types as LmsTypes } from '../ducks/lms';
+import { Types as TagTypes } from '../ducks/tag';
 
 import { signInRequest, signOutRequest } from './auth';
-import { getLms, putLms } from './lms';
+import { getTag, postTag } from './tag';
 
 export default function* rootSaga() {
   return yield all([
     takeLatest(AuthTypes.SIGN_IN_REQUEST, signInRequest),
     takeLatest(AuthTypes.SIGN_OUT_REQUEST, signOutRequest),
-    takeLatest(LmsTypes.GET_LMS, getLms),
-    takeLatest(LmsTypes.PUT_LMS, putLms)
+    takeLatest(TagTypes.GET_TAG, getTag),
+    takeLatest(TagTypes.POST_TAG, postTag)
   ])
 }
