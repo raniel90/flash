@@ -31,7 +31,7 @@ const moodleOptions = [
   { value: '3.6.0', label: '3.6.0' }
 ];
 
-class LmsSelect extends Component {
+class Transactions extends Component {
 
   state = {
     id: null,
@@ -115,48 +115,20 @@ class LmsSelect extends Component {
     )
   }
 
-  getImgFromName = (name) => {
-    if (name === MOODLE) {
-      return moodle;
-    }
-
-    if (name === 'chamilo') {
-      return chamilo;
-    }
-
-    if (name === 'open_edx') {
-      return open_edx;
-    }
-
-    if (name === 'totara_learn') {
-      return totara_learn;
-    }
-  }
-
   openDialog = (lms, item) => {
     this.setState({ ...item, version: { label: item.version, value: item.version } });
     this.props.setDialog(lms);
   }
 
   render() {
-    const { dialog, lms } = this.props;
+    const { dialog } = this.props;
 
     return (
       <PerfectScrollbar style={{ width: '100%' }}>
         <ConfigContainer size='big' style={{ minHeight: '70%' }}>
           <h1>Transações</h1>
 
-          <CardContainer>
-            {lms.data.map(item => (
-              <Card key={item.id} onClick={item.name === MOODLE ? this.openDialog.bind(this, item.name, item) : null}>
-                <Image disabled={!item.version} alt="" src={this.getImgFromName(item.name)} />
-                <CardVersion
-                  disabled={!item.version}>
-                  {item.version ? `Versão: ${item.version}` : 'Não Configurado'}
-                </CardVersion>
-              </Card>
-            ))}
-          </CardContainer>
+         
         </ConfigContainer>
         {dialog.moodle ? this.renderMoodleDialog() : null}
       </PerfectScrollbar>
@@ -164,10 +136,10 @@ class LmsSelect extends Component {
   }
 }
 
-const mapStateToProps = ({ dialog, screen, lms }) => ({ dialog, screen, lms });
+const mapStateToProps = ({ dialog }) => ({ dialog });
 
 export default connect(
   mapStateToProps, {
-  ...DialogActions, ...ScreenActions, ...LmsActions, ...toastrActions
+  ...DialogActions,...toastrActions
 }
-)(LmsSelect);
+)(Transactions);

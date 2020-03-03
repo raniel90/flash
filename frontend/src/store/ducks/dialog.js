@@ -10,12 +10,12 @@ export const { Types, Creators } = createActions({
 /* Initial State */
 
 export const INITIAL_STATE = Immutable({
-  moodle: false
+  tag: false
 });
 
 /* Reducers */
 
-export const set = (state, { field, data }) => state.merge({ [field]: !state[field] });
+export const set = (state, { field }) => state.merge({ [field]: !state[field] });
 
 /* Reducers to types */
 
