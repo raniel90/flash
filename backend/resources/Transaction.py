@@ -23,3 +23,4 @@ class Transaction(Resource):
           return json.loads(response.text), 200
         except:
           traceback.print_exc()
+          return [], 500

@@ -22,6 +22,7 @@ import Table from '../Table';
 class Tags extends Component {
 
   state = {
+    id: null,
     tag: null,
     monthly_value: null,
     is_calculate_suggest: false
@@ -47,6 +48,12 @@ class Tags extends Component {
 
     postTag({ id, tag, monthly_value: +monthly_value, is_calculate_suggest: !!is_calculate_suggest });
     setDialog('tag');
+    this.setState({ 
+      id: null,
+      tag: null,
+      monthly_value: null,
+      is_calculate_suggest: false
+    });
   }
 
   renderWarningMsg = (msg) => {
@@ -121,6 +128,8 @@ class Tags extends Component {
             data={data}
             loading={loading}
             error={error}
+            hasEdit={true}
+            hasDelete={true}
            />
          
         </ConfigContainer>

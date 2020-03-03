@@ -6,15 +6,20 @@ import { baseColor } from '../../styles/global';
 import React, { Component, Fragment } from 'react';
 import ArrowUpIcon from 'react-feather/dist/icons/chevron-up';
 import ArrowDownIcon from 'react-feather/dist/icons/chevron-down';
+import MoreIcon from 'react-feather/dist/icons/more-horizontal';
 import {
   StyledTable, HeaderColumn, ItemColumn,
   Separator, CenterContainer
 } from './styles';
 import { fieldParser } from '../../utils';
-import { CircularProgress } from '@material-ui/core';
-import { TYPE_LINK } from '../../utils/schema';
+import { CircularProgress, MenuItem, IconButton, Menu, Fade } from '@material-ui/core';
+import { TYPE_LINK, TYPE_ACTIONS } from '../../utils/schema';
 
 class Table extends Component {
+
+  state = {
+    anchorEl: null
+  }
 
   handleRowClick(rowId, item) {
     const { expandedRow, hasDetail } = this.props;
@@ -37,8 +42,12 @@ class Table extends Component {
   getValueTd = (item, headerByKey, key) => {
     const column = headerByKey[key];
 
-    if (column && column.type === TYPE_LINK && column.value_static) {
+    if (column && column.value_static) {
       return column.value_static;
+    }
+
+    if (column && column.type === TYPE_ACTIONS) {
+      return this.renderActions();
     }
 
     return fieldParser(item[key], column.type);
@@ -52,13 +61,43 @@ class Table extends Component {
     if (column && column.type === TYPE_LINK && item.link) {
       this.props.history.push(item.link);
     }
+
+    if (column && column.type === TYPE_LINK && item.link) {
+      this.props.history.push(item.link);
+    }
   }
+
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  renderActions = () => (
+    <Fragment>
+      <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick.bind(this)}>
+        <MoreIcon />
+      </IconButton>
+      <Menu
+        id="fade-menu"
+        anchorEl={this.state.anchorEl}
+        keepMounted
+        open={Boolean(this.state.anchorEl)}
+        onClose={this.handleClose}
+        TransitionComponent={Fade}
+      >
+        <MenuItem onClick={this.handleClose}>Editar</MenuItem>
+        <MenuItem onClick={this.handleClose}>Excluir</MenuItem>
+      </Menu>
+    </Fragment>
+  )
 
   renderItem(items, item, idx, headerByKey) {
     const { expandedRow } = this.props;
     const isExpanded = expandedRow === idx;
     const color = isExpanded ? baseColor : '#000';
-    const colSpan = Object.keys(headerByKey).length;
     const isFirst = idx === 0;
     const isLast = idx + 1 === items.length;
 
