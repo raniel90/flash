@@ -1,33 +1,33 @@
 import datetime
 import traceback
 from Model import db
-from Model import Lms, LmsSchema
+from Model import Tag, TagSchema
 from flask import request
 from flask_restful import Resource
 
-
 class TagResource(Resource):
+
+    @jwt_required
     def post(self):
+
         try:
             data = request.get_json()
             now = datetime.datetime.now()
+            current_user = get_jwt_identity()
 
-            lms = Lms(
-                name=data['name'],
-                url=data['url'],
-                token=data['token'],
-                version=data['version'],
+            tag = Tag(
+                tag=data['tag'],
+                monthly_value=data['monthly_value'],
+                is_calculate_suggest=data['is_calculate_suggest'],
+                user_id=data['user_id']
                 created_at=now,
                 updated_at=now
             )
 
-            db.session.add(lms)
+            db.session.add(tag)
             db.session.commit()
 
-            schema = LmsSchema(only=("name", "created_at"))
-            result = schema.dump(lms)
-
-            return result
+            return self.get()
 
         except:
             traceback.print_exc()
@@ -35,10 +35,10 @@ class TagResource(Resource):
 
     def get(self):
         try:
-            res = Lms.query.order_by(Lms.id).with_entities(
-                Lms.id, Lms.name, Lms.url, Lms.token, Lms.version).all()
+            res = Tag.query.order_by(Tag.id).with_entities(
+                Tag.id, Tag.name, Tag.url, Tag.token, Tag.version).all()
 
-            schema = LmsSchema(many=True)
+            schema = TagSchema(many=True)
             data = schema.dump(res)
 
             return data
@@ -52,20 +52,20 @@ class TagResource(Resource):
             payload = request.get_json()
             now = datetime.datetime.now()
 
-            lms = Lms.query.filter_by(id=payload['id']).first()
+            tag = Tag.query.filter_by(id=payload['id']).first()
 
             if 'url' in payload:
-                lms.url = payload['url']
+                tag.url = payload['url']
 
             if 'token' in payload:
-                lms.token = payload['token']
+                tag.token = payload['token']
 
             if 'version' in payload:
-                lms.version = payload['version']
+                tag.version = payload['version']
 
-            lms.updated_at = now
+            tag.updated_at = now
 
-            db.session.add(lms)
+            db.session.add(tag)
             db.session.commit()
 
             return self.get()

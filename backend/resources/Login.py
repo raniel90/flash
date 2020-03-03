@@ -13,7 +13,7 @@ class Login(Resource):
         password = request.get_json()['password']
 
         user = User.query \
-            .with_entities(User.person_id, User.password) \
+            .with_entities(User.id, User.flash_id, User.password) \
             .filter_by(email=email).first()
         
         if user is None:
@@ -21,7 +21,7 @@ class Login(Resource):
 
         if bcrypt.check_password_hash(user.password, password):
             access_token = create_access_token(
-                identity={'person_id': user.person_id})
+                identity={'id': user.id, 'flash_id': user.flash_id})
             result = { "token": f"Bearer {access_token}"}
         else:
             result = {"error": "Invalid username and password"}, 401
