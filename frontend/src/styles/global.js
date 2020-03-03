@@ -4,7 +4,7 @@ import { initializeIcons } from '@uifabric/icons';
 import { loadTheme } from 'office-ui-fabric-react';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
-const baseColor = '#000';
+export const baseColor = '#000';
 
 loadTheme({
   palette: {

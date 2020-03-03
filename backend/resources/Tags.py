@@ -42,6 +42,17 @@ class Tags(Resource):
             schema = TagSchema(many=True)
             data = schema.dump(res)
 
+            header = [
+                {'value': 'tag', 'label': 'Tag'},
+                {'value': 'monthly_value', 'label': 'Valor Mensal', 'align': 'right', 'type': 'TYPE_CURRENCY'},
+                {'value': 'is_calculate_suggest', 'label': 'Calcular Sugestão?'}
+            ]
+
+            data = {
+                'header': header,
+                'items': data[0]
+            }
+
             return data
 
         except:

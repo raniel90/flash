@@ -17,6 +17,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import SideMenu from '../SideMenu';
 import { Header } from '../Indicators/styles';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
+import Table from '../Table';
 
 class Tags extends Component {
 
@@ -24,6 +25,10 @@ class Tags extends Component {
     tag: null,
     monthly_value: null,
     is_calculate_suggest: false
+  }
+
+  componentDidMount() {
+    this.props.getTags();
   }
 
   submit() {
@@ -96,7 +101,8 @@ class Tags extends Component {
   }
 
   render() {
-    const { dialog,  } = this.props;
+    const { dialog, } = this.props;
+    const { data, loading, error } = this.props.tag;
 
     return (
       <Container>
@@ -110,6 +116,12 @@ class Tags extends Component {
               <Button onClick={this.openDialog.bind(this)}>Criar Tag</Button>
             </div>
           </Header>
+
+          <Table 
+            data={data}
+            loading={loading}
+            error={error}
+           />
          
         </ConfigContainer>
         {dialog.tag ? this.renderDialog() : null}
@@ -119,7 +131,7 @@ class Tags extends Component {
   }
 }
 
-const mapStateToProps = ({ dialog }) => ({ dialog });
+const mapStateToProps = ({ dialog, tag }) => ({ dialog, tag });
 
 export default connect(
   mapStateToProps, {
