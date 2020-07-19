@@ -16,7 +16,7 @@
     "connected-react-router": "^6.6.1",
     "history": "^4.10.1",
     "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "office-ui-fabric-react": "^7.84.0",
     "react": "^16.12.0",
